@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        #responseText {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 80%;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <h1>OCR Form</h1>
+    <form id="ocrForm" enctype="multipart/form-data" action="{% url 'ocr-index' %}" method="POST">
+        {% csrf_token %}
+        <input type="file" id="imageInput" name="image">
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="responseText"></div>
+
+    <script>
+        document.getElementById("ocrForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the default form submission
+        
+            // Serialize the form data including the CSRF token
+            var formData = new FormData(this);
+        
+            // Make a fetch request to your server
+            fetch('/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                // Update the response text in the responseText div
+                document.getElementById("responseText").textContent = data;
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        });
+        </script>
+        
+</body>
+</html>
