@@ -1,0 +1,7 @@
+Django==4.3
+
+pillow==8.0.1
+
+pytesseract==0.3.6
+
+gensim==3.8.3
