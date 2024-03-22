@@ -33,9 +33,6 @@ class OcrIndex(View):
             try:
                 
                 image = request.FILES['image']
-                # image = image.name
-                # path = settings.MEDIA_ROOT
-                # full_path = f"{path}\images\{image}"
                 img = Image.objects.create(image=image)
                 img_path = img.image.path
                 # you need to install tesseract before this
@@ -51,8 +48,6 @@ class OcrIndex(View):
                 print(e)
                 text = str(e)
             
-           
-
             return HttpResponse(text)
             
 

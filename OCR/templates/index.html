@@ -7,42 +7,71 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f2f2f2; /* Soft background color */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #container {
+            background-color: #ffffff; /* White background color for container */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            text-align: center;
         }
         form {
-            margin-top: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        input[type="file"] {
-            margin-bottom: 10px;
-        }
-        button {
+        #fileButton {
             padding: 10px 20px;
             background-color: #007bff;
             color: #fff;
             border: none;
             cursor: pointer;
         }
+        #fileInput {
+            display: none;
+        }
+        button[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: 50%;
+            cursor: pointer;
+        }
         #responseText {
             margin-top: 20px;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #007bff;
             border-radius: 5px;
             width: 80%;
             word-wrap: break-word;
+            background-color: #e6f7ff; /* Light blue background color */
+            color: #007bff; /* Dark blue text color */
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <h1>OCR Form</h1>
-    <form id="ocrForm" enctype="multipart/form-data" action="{% url 'ocr-index' %}" method="POST">
-        {% csrf_token %}
-        <input type="file" id="imageInput" name="image">
-        <button type="submit">Submit</button>
-    </form>
+    <div id="container">
+        <h1 style="color: #007bff;">OCR Form</h1>
+        <form id="ocrForm" enctype="multipart/form-data" action="{% url 'ocr-index' %}" method="POST">
+            {% csrf_token %}
+            <label for="fileInput" id="fileButton">Choose File</label>
+            <input type="file" id="fileInput" name="image" style="display: none;">
+            <br>
+            <button type="submit">Submit</button>
+        </form>
 
-    <div id="responseText"></div>
+        <div id="responseText">Response will appear here</div>
+    </div>
 
     <script>
         document.getElementById("ocrForm").addEventListener("submit", function(event) {
@@ -52,7 +81,7 @@
             var formData = new FormData(this);
         
             // Make a fetch request to your server
-            fetch('/', {
+            fetch("{% url 'ocr-index' %}", {
                 method: 'POST',
                 body: formData
             })
@@ -70,7 +99,6 @@
                 console.error('There was a problem with the fetch operation:', error);
             });
         });
-        </script>
-        
+    </script>
 </body>
 </html>
